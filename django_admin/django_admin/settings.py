@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'migrationCore',
-       'admin_autoregister',
-        'reset_migrations',
+    'admin_autoregister',
+    'reset_migrations',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

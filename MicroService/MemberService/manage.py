@@ -2,21 +2,21 @@ import os
 import unittest
 from flask_script import Manager
 from app.main import create_app
-from app.main.controller.purchased_controller import PurchasedService
+from app.main.controller.company_controller import CompanyService
 app = create_app(os.getenv('ENV_STATE'))
 
 
 app.app_context().push()
 manager = Manager(app)
 
-app.register_blueprint(PurchasedService)
+app.register_blueprint(CompanyService)
 
 
 
 
 @manager.command
 def run():
-    app.run(threaded=True)
+    app.run()
 
 @manager.command
 def test():

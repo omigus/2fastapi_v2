@@ -96,31 +96,32 @@ class Company(models.Model):
     )
     company_name = models.CharField(max_length=180, blank=True, null=True)
     company_logo = models.CharField(max_length=180, blank=True, null=True)
-    created_on = models.DateField(auto_now=False, auto_now_add=False)
+    company_is_active = models.BooleanField(default=False)
+    created_on = models.DateField(auto_now=True, auto_now_add=True)
     class Meta:
         db_table = "company"
     def __str__(self):
         return self.company_name
     
-class Company_has_system_permission(models.Model):
-    company_has_system_permission_id = models.AutoField(primary_key=True)
+class Company_has_system_group_all(models.Model):
+    company_has_system_group_all_id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, models.CASCADE)
     system_group_all = models.ForeignKey(System_group_all, models.CASCADE)
     created_on = models.DateField(auto_now=False, auto_now_add=False)
     class Meta:
-        db_table = "company_has_system_permission"
+        db_table = "company_has_system_group_all"
     def __str__(self):
-        return str(self.company_has_system_permission_id)
+        return str(self.company_has_system_group_all_id)
 
-class Company_users_limit_count(models.Model):
-    company_users_limit_id = models.AutoField(primary_key=True)
+class Company_users_current(models.Model):
+    company_users_current_id = models.AutoField(primary_key=True)
     company = models.ForeignKey(Company, models.CASCADE)
-    company_users_limit_user = models.IntegerField( default=0)
-    company_users_limit_admin = models.IntegerField(default=0)
+    company_users_current_user = models.IntegerField( default=0)
+    company_users_current_admin = models.IntegerField(default=0)
     class Meta:
-        db_table = "company_users_limit_count"
+        db_table = "company_users_current"
     def __str__(self):
-        return str(self.company_users_limit_id)
+        return str(self.company_users_current_id)
     
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
@@ -143,6 +144,7 @@ class User(models.Model):
     company = models.ForeignKey(Company, models.CASCADE)
     user_username = models.CharField(max_length=100, unique=True , blank=False, null=False )
     user_password = models.CharField(max_length=80, blank=True, null=True)
+    user_is_active = models.BooleanField(default=False)
     class Meta:
         db_table = "user"
     def __str__(self):
