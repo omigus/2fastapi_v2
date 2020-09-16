@@ -24,10 +24,8 @@ def token_required(f):
 
         try:
             data = jwt.decode(access_token, os.getenv('SECRET_KEY'))
-            print(data)
             current_user = data
         except Exception as e:
-            print(e)
             return jsonify({"message": "Invalid Token"}), 401
 
         return f(current_user, *args, **kwargs)
