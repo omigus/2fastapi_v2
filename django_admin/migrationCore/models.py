@@ -76,6 +76,7 @@ class System_create_limit (models.Model):
     system_create_limit_id = models.AutoField(primary_key=True) 
     system_create_limit_user = models.IntegerField()
     system_create_limit_admin = models.IntegerField()
+    system_create_limit_storage = models.IntegerField(default = 0)
     class Meta:
         db_table = "system_create_limit"
     def __str__(self):
@@ -92,12 +93,11 @@ class System_group_limit (models.Model):
 class Company(models.Model):
     company_id = models.AutoField(primary_key=True)
     company_public_id = models.UUIDField(
-         default=uuid.uuid4, editable=False
+         default=uuid.uuid4, editable=False ,unique = True
     )
-    company_name = models.CharField(max_length=180, blank=True, null=True)
-    company_logo = models.CharField(max_length=180, blank=True, null=True)
+    company_name = models.CharField(max_length=180, blank=True, null=True , unique =True)
     company_is_active = models.BooleanField(default=False)
-    created_on = models.DateField(auto_now=True, auto_now_add=True)
+    created_on = models.DateField( default=datetime.datetime.now)
     class Meta:
         db_table = "company"
     def __str__(self):
