@@ -3,23 +3,23 @@ import json
 import psycopg2
 from app.main.helper.token import token_required , token_required_admin
 
-from app.main.service.team_service import InsertTeam , InsertTeamMember ,RemoveTeamMember , findAll
+from app.main.service.team_service import InsertTeam , InsertTeamMember ,RemoveTeamMember 
 
 TeamService = Blueprint("TeamService", __name__,url_prefix= "/api/v2")
 
 
 
-@TeamService.route("/team", methods=["GET"])
-@token_required_admin
-def display_team_companyId(current_user):
-	company_id = current_user['company_id']
-	if request.content_type != 'application/json':
-		return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
-	result = findAll()
-	if result == 'success':
-		return jsonify ({"status": "success", "message": result }), 200
-	else :
-		jsonify({"status": "failed", "message": "error" }), 500
+# @TeamService.route("/team", methods=["GET"])
+# @token_required_admin
+# def display_team_companyId(current_user):
+# 	company_id = current_user['company_id']
+# 	if request.content_type != 'application/json':
+# 		return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
+# 	result = findAll()
+# 	if result == 'success':
+# 		return jsonify ({"status": "success", "message": result }), 200
+# 	else :
+# 		jsonify({"status": "failed", "message": "error" }), 500
 
 
 @TeamService.route("/team", methods=["POST"])
