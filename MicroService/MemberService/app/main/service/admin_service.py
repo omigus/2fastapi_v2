@@ -7,34 +7,34 @@ import jwt
 import uuid
 
 
-def findUserNameId(username):
+def findAdminNameId(username):
 	try:
 		ps_connection  = InitDB()
 		if(ps_connection):
 			ps_cursor = ps_connection.cursor()
-			query = ("select count(*) from users where user_username = %s ")
+			query = ("select count(*) from admin where admin_username = %s ")
 			ps_cursor.execute(query, (username , ) )
-			data = ps_cursor.fetchone()
+			company = ps_cursor.fetchone()
 			ps_cursor.close()   
 			CloseDB(ps_connection)     
-			return data
+			return company
 	except(Exception ) as e:
-		return e
-def registerUser(username ,password ,company_id):
+		return 'error'
+def registerAdmin(username ,password ,company_id):
 	hashed_password = generate_password_hash(password, method='sha256')
-	user_public_id = str(uuid.uuid4()) 
+	admin_public_id = str(uuid.uuid4()) 
 	try:
 		ps_connection  = InitDB()
 		if(ps_connection):
 			ps_cursor = ps_connection.cursor()
-			query = ("  insert into users( user_public_id , user_username , user_password ,user_is_active,company_id ) values ( %s , %s , %s ,%s ,%s )" )
-			ps_cursor.execute(query, (user_public_id,  username , hashed_password , '1', company_id , ) ) 
+			query = ("  insert into admin( admin_public_id , admin_username , admin_password ,admin_is_active,company_id ) values ( %s , %s , %s ,%s ,%s )" )
+			ps_cursor.execute(query, (admin_public_id,  username , hashed_password , '1', company_id , ) ) 
 			ps_connection.commit()
 			ps_cursor.close()
 			CloseDB(ps_connection)      
 			return 'success'
 	except Exception as e :
-		 return 'error'
+	   return 'error'
 
 
 	

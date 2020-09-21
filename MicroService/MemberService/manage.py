@@ -3,7 +3,7 @@ import unittest
 from flask_script import Manager
 from app.main import create_app
 from app.main.controller.company_controller import CompanyService
-from app.main.controller.user_controller import UserService
+from app.main.controller.member_controller import MemberService
 app = create_app(os.getenv('ENV_STATE'))
 
 
@@ -11,7 +11,7 @@ app.app_context().push()
 manager = Manager(app)
 
 app.register_blueprint(CompanyService)
-app.register_blueprint(UserService)
+app.register_blueprint(MemberService)
 
 
 

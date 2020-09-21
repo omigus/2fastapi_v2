@@ -136,7 +136,7 @@ class User(models.Model):
     user_password = models.CharField(max_length=80, blank=True, null=True)
     user_is_active = models.BooleanField(default=False)
     class Meta:
-        db_table = "user"
+        db_table = "users"
     def __str__(self):
         return str(self.user_public_id)
 

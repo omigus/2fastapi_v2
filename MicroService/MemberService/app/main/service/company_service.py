@@ -83,6 +83,32 @@ def checkcompany_admin_limit(company_public_id):
 	except Exception as e :
 		print(e)
 		pass
+def checkcompany_user_limit(company_public_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = (   " select  system_create_limit.system_create_limit_user from system_create_limit  "
+						" inner join system_group_limit "
+						" on   system_create_limit.system_create_limit_id  = system_group_limit.system_create_limit_id "
+						" inner join system_group_all "
+						" on "
+						" system_group_all.system_group_all_id = system_group_limit.system_group_all_id "
+						" inner join company_has_system_group_all "
+						" on "
+						" company_has_system_group_all.system_group_all_id = system_group_all.system_group_all_id "
+						" inner join company "
+						" on "
+						" company.company_id = company_has_system_group_all.company_id "  
+						" where company.company_public_id = %s ")
+			ps_cursor.execute(query, (company_public_id,))
+			limit_all = ps_cursor.fetchone()
+			ps_cursor.close()
+			CloseDB(ps_connection)
+			return limit_all[0]
+	except Exception as e :
+		print(e)
+		pass
 
 def checkcompany_current_admin_active(company_id , active):
 	try:
@@ -91,6 +117,21 @@ def checkcompany_current_admin_active(company_id , active):
 			ps_cursor = ps_connection.cursor()
 			query = (
 				" select count(admin_is_active) from admin where admin_is_active = %s and company_id = %s "
+			)
+			ps_cursor.execute(query, ( str(active) , company_id ,))
+			limit_all = ps_cursor.fetchone()
+			ps_cursor.close()
+			CloseDB(ps_connection)
+			return limit_all[0]
+	except  Exception as e :
+		return e
+def checkcompany_current_user_active(company_id , active):
+	try:
+		ps_connection = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = (
+				" select count(user_is_active) from users where user_is_active = %s and company_id = %s "
 			)
 			ps_cursor.execute(query, ( str(active) , company_id ,))
 			limit_all = ps_cursor.fetchone()
