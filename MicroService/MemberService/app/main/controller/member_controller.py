@@ -4,8 +4,8 @@ import psycopg2
 from app.main.service.company_service import *
 from app.main.service.admin_service import findAdminNameId ,registerAdmin
 from app.main.service.user_service import *
-from app.main.helper.token import token_required
-import datetime
+from app.main.helper.token import token_required , token_required_admin
+import datetime 
 
 MemberService = Blueprint("MemberService", __name__,url_prefix= "/api/v2")
 
@@ -45,7 +45,7 @@ def Register_admin_company(current_user):
 
 
 @MemberService.route("/member/user", methods=["POST"])
-@token_required
+@token_required_admin
 def Register_user_company(current_user):
     if request.content_type != 'application/json':
         return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
