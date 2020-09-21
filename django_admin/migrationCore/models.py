@@ -150,4 +150,27 @@ class System_token(models.Model):
     def __str__(self):
         return str(self.system_token)
 
-    
+class Team(models.Model):
+    team_id = models.AutoField(primary_key=True)
+    team_public_id =  models.UUIDField(
+         default=uuid.uuid4, editable=False,unique=True
+    )
+    company = models.ForeignKey(Company, models.CASCADE)
+    team_name = models.CharField(max_length=120,  blank=False, null=False )
+    team_avatar = models.CharField(max_length=180,  blank=True, null=True )
+    team_is_active = models.BooleanField(default=False)
+    admin = models.ForeignKey(Admin, models.CASCADE)
+    created_on = models.DateTimeField()
+    class Meta:
+        db_table = "team"
+    def __str__(self):
+        return str(self.team_public_id)
+
+class Team_has_users(models.Model):
+    team_has_users_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.CASCADE)
+    team =  models.ForeignKey(Team, models.CASCADE)
+    class Meta:
+        db_table = "team_has_users"
+    def __str__(self):
+        return str(self.team_has_users_id)

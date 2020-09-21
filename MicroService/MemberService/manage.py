@@ -4,6 +4,7 @@ from flask_script import Manager
 from app.main import create_app
 from app.main.controller.company_controller import CompanyService
 from app.main.controller.member_controller import MemberService
+from app.main.controller.team_controller import TeamService
 app = create_app(os.getenv('ENV_STATE'))
 
 
@@ -12,7 +13,7 @@ manager = Manager(app)
 
 app.register_blueprint(CompanyService)
 app.register_blueprint(MemberService)
-
+app.register_blueprint(TeamService)
 
 
 @manager.command
