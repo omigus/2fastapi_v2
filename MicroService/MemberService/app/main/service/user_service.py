@@ -7,7 +7,7 @@ import jwt
 import uuid
 
 
-def findUserName(username):
+def findUserNameId(username):
 	try:
 		ps_connection  = InitDB()
 		if(ps_connection):
@@ -28,13 +28,14 @@ def registerAdmin(username ,password ,company_id):
 		if(ps_connection):
 			ps_cursor = ps_connection.cursor()
 			query = ("  insert into admin( admin_public_id , admin_username , admin_password ,admin_is_active,company_id ) values ( %s , %s , %s ,%s ,%s )" )
-			ps_cursor.execute(query, (admin_public_id, username , hashed_password , '1', company_id , ) ) 
+			ps_cursor.execute(query, (admin_public_id,  username , hashed_password , '1', company_id , ) ) 
 			ps_connection.commit()
 			ps_cursor.close()
 			CloseDB(ps_connection)      
 			return 'success'
 	except Exception as e :
 	   return 'error'
+
 
 	
 	

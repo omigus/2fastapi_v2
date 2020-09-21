@@ -113,16 +113,6 @@ class Company_has_system_group_all(models.Model):
     def __str__(self):
         return str(self.company_has_system_group_all_id)
 
-class Company_users_current(models.Model):
-    company_users_current_id = models.AutoField(primary_key=True)
-    company = models.ForeignKey(Company, models.CASCADE)
-    company_users_current_user = models.IntegerField( default=0)
-    company_users_current_admin = models.IntegerField(default=0)
-    class Meta:
-        db_table = "company_users_current"
-    def __str__(self):
-        return str(self.company_users_current_id)
-    
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     admin_public_id =  models.UUIDField(
@@ -149,5 +139,15 @@ class User(models.Model):
         db_table = "user"
     def __str__(self):
         return str(self.user_public_id)
-    
+
+class System_token(models.Model):
+    system_token_id = models.AutoField(primary_key=True)
+    system_token = models.CharField(max_length=250, unique=True , blank=False, null=False )
+    member_public_id =  models.CharField(max_length=220, )
+    created_on = models.DateTimeField()
+    class Meta:
+        db_table = "system_token"
+    def __str__(self):
+        return str(self.system_token)
+
     

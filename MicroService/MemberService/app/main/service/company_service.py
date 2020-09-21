@@ -11,7 +11,7 @@ def create_storage(current_user_jwt_token,company_uuid):
 	r = requests.post(storage_service_url, headers=headers)
 	return r.status_code 
 
-def findByPublic(company_public_id):
+def findByPublic_company(company_public_id):
 	try:
 		ps_connection  = InitDB()
 		if(ps_connection):
@@ -25,6 +25,21 @@ def findByPublic(company_public_id):
 			return company
 	except(Exception ) as e:
 		return 'error'
+def findIdByPublic_company(company_public_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			uuid_entry = str(company_public_id) 
+			ps_cursor = ps_connection.cursor()
+			query = ("select company_id from company where company_public_id = %s ")
+			ps_cursor.execute(query, (uuid_entry , ) )
+			company = ps_cursor.fetchone()
+			ps_cursor.close()   
+			CloseDB(ps_connection)     
+			return company
+	except(Exception ) as e:
+		return 'error'
+
 
 def check_exists_company_users_current(company_public_id):
 	try:
@@ -68,3 +83,19 @@ def checkcompany_admin_limit(company_public_id):
 	except Exception as e :
 		print(e)
 		pass
+
+def checkcompany_current_admin_active(company_id , active):
+	try:
+		ps_connection = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = (
+				" select count(admin_is_active) from admin where admin_is_active = %s and company_id = %s "
+			)
+			ps_cursor.execute(query, ( str(active) , company_id ,))
+			limit_all = ps_cursor.fetchone()
+			ps_cursor.close()
+			CloseDB(ps_connection)
+			return limit_all[0]
+	except  Exception as e :
+		return e
