@@ -15,7 +15,7 @@ app.register_blueprint(AuthService)
 
 @manager.command
 def run():
-    app.run(port=5001)
+    app.run(port=5001 , host=0.0.0.0)
 
 @manager.command
 def test():
