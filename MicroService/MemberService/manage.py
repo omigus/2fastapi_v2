@@ -18,7 +18,7 @@ app.register_blueprint(TeamService)
 
 @manager.command
 def run():
-    app.run(port=5000 ,host=0.0.0.0)
+    app.run(port=5000 ,host="0.0.0.0")
 
 @manager.command
 def test():
