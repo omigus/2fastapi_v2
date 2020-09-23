@@ -174,3 +174,18 @@ class Team_has_users(models.Model):
         db_table = "team_has_users"
     def __str__(self):
         return str(self.team_has_users_id)
+
+class Userdetails(models.Model):
+    userdetails_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.CASCADE)
+    userdetails_employee_id = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_firstname = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_lastname = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_phone = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_email = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_position = models.CharField(max_length=80, blank=True, null=True)
+    userdetails_avatar = models.CharField(max_length=104, blank=True, null=True)
+    class Meta:
+        db_table = "userdetails"
+    def __str__(self):
+        return str(self.userdetails_id)
