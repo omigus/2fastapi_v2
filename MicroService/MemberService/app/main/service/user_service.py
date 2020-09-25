@@ -16,7 +16,7 @@ def find_all_user(company_id):
 					" left join userdetails on users.user_id = userdetails.user_id "
           			" where company_id = %s ")
 			ps_cursor.execute(sql, (company_id , ) ) 
-			data = ps_cursor.fetchmany()
+			data = ps_cursor.fetchall()
 			ps_cursor.close()
 			CloseDB(ps_connection)      
 			return ['success' , data ,200]
