@@ -5,7 +5,24 @@ from app.main.database import InitDB , CloseDB
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import uuid
+from psycopg2.extras import RealDictCursor
 
+def find_all_user(company_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor(cursor_factory=RealDictCursor)
+			sql = (" select users.company_id , users.user_is_active , users.user_public_id , users.user_username , userdetails.userdetails_firstname , userdetails.userdetails_lastname , userdetails.userdetails_employee_id ,   userdetails.userdetails_avatar  from users  "
+					" left join userdetails on users.user_id = userdetails.user_id "
+          			" where company_id = %s ")
+			ps_cursor.execute(sql, (company_id , ) ) 
+			data = ps_cursor.fetchmany()
+			ps_cursor.close()
+			CloseDB(ps_connection)      
+			return ['success' , data ,200]
+	except Exception as e :
+		return ['success' ,'failed ' +e.message  ,500]
+    
 
 def findUserNameId(username):
 	try:

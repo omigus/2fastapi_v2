@@ -9,6 +9,15 @@ import datetime
 
 MemberService = Blueprint("MemberService", __name__,url_prefix= "/api/v2")
 
+
+@MemberService.route("/users", methods=["GET"])
+@token_required
+def show_user_in_company(current_user ):
+    result = find_all_user(current_user["company_id"])
+    return jsonify({"status": result[0], "message" : result[1] }), result[2]
+   
+   
+   
 @MemberService.route("/member/admin", methods=["POST"])
 @token_required
 def Register_admin_company(current_user):
