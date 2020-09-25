@@ -29,6 +29,7 @@ class Permission(models.Model):
     permission_is_active = models.BooleanField(default=False)
     permission_admin =  models.BooleanField(default=False)
     permission_user =  models.BooleanField(default=False)
+    permission_team =  models.BooleanField(default=False)
     class Meta:
         db_table = "permission"
     def __str__(self):
@@ -56,7 +57,7 @@ class System_group_all(models.Model):
 class System_permission_all(models.Model):
     system_permission_all_id = models.AutoField(primary_key=True) 
     system_group_all = models.ForeignKey(System_group_all, models.CASCADE)
-    permission = models.ForeignKey(Permission, models.CASCADE)
+    permission_has_module = models.ForeignKey(Permission_has_module, models.CASCADE , default=None)
     class Meta:
         db_table = "system_permission_all"
     def __str__(self):
@@ -177,7 +178,7 @@ class Team_has_users(models.Model):
 
 class Userdetails(models.Model):
     userdetails_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.OneToOneField(User, models.CASCADE)
     userdetails_employee_id = models.CharField(max_length=80, blank=True, null=True)
     userdetails_firstname = models.CharField(max_length=80, blank=True, null=True)
     userdetails_lastname = models.CharField(max_length=80, blank=True, null=True)

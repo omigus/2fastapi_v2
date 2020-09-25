@@ -35,7 +35,7 @@ def findteamMember_details(team_id):
 		ps_connection = InitDB()
 		if (ps_connection):
 			ps_cursor = ps_connection.cursor(cursor_factory=RealDictCursor)
-			query = (" select users.user_is_active , users.user_id , users.user_username , userdetails.userdetails_firstname "
+			query = (" select users.user_is_active , users.user_id,users.user_public_id , users.user_username , userdetails.userdetails_firstname "
 			 					" ,userdetails.userdetails_lastname  ,userdetails.userdetails_lastname  ,userdetails.userdetails_employee_id  ,userdetails.userdetails_phone , userdetails.userdetails_email,userdetails.userdetails_position , userdetails.userdetails_avatar "
 								 " from team_has_users "
 			 					" inner join users on users.user_id = team_has_users.user_id  "
@@ -80,6 +80,21 @@ def InsertTeam(team_name , team_avatar , admin_id , company_id):
 			ps_cursor = ps_connection.cursor()
 			query = ("  insert into team ( team_public_id , team_name , team_avatar ,team_is_active,created_on , admin_id , company_id ) values ( %s , %s , %s ,%s ,%s ,%s ,%s )" )
 			ps_cursor.execute(query, (team_uuid,  team_name , team_avatar , '1', dt  , admin_id ,company_id ) ) 
+			ps_connection.commit()
+			ps_cursor.close()
+			CloseDB(ps_connection)      
+			return 'success'
+	except Exception as e :
+		 return 'error'
+
+
+def EditTeam(team_name , company_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("  UPDATE  team SET  team_name = %s WHERE company_id = %s " )
+			ps_cursor.execute(query, (team_name ,company_id , ) ) 
 			ps_connection.commit()
 			ps_cursor.close()
 			CloseDB(ps_connection)      

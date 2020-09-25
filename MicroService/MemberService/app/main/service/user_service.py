@@ -36,6 +36,83 @@ def registerUser(username ,password ,company_id):
 	except Exception as e :
 		 return 'error'
 
+def findUserIdfromPublic_id(user_public_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("select user_id from users where user_public_id = %s ")
+			ps_cursor.execute(query, (user_public_id , ) )
+			data = ps_cursor.fetchone()
+			ps_cursor.close()   
+			CloseDB(ps_connection)    
+			return data[0]
+	except(Exception ) as e:
+		return e
 
-	
-	
+def findValidUserId(user_public_id):
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("select count(*) from users where user_public_id = %s ")
+			ps_cursor.execute(query, (user_public_id , ) )
+			data = ps_cursor.fetchone()
+			ps_cursor.close()   
+			CloseDB(ps_connection)    
+			count = int(data[0]) 
+			return (count)
+	except(Exception ) as e:
+		return e
+
+def findValidUserId_details(user_public_id):
+	try:
+		user_id = findUserIdfromPublic_id(user_public_id)
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("select count(*) from userdetails where user_id = %s ")
+			ps_cursor.execute(query, (user_id , ) )
+			data = ps_cursor.fetchone()
+			ps_cursor.close()   
+			CloseDB(ps_connection)    
+			count = int(data[0]) 
+			return (count)
+	except(Exception ) as e:
+		return e
+
+
+def insertUser_details(params,user_public_id):
+	try:
+		user_id = findUserIdfromPublic_id(user_public_id)
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("  insert into userdetails( userdetails_employee_id , userdetails_firstname , userdetails_lastname , userdetails_phone , userdetails_email , userdetails_position ,user_id ) values ( %s , %s , %s ,%s ,%s ,%s ,%s) " )
+			ps_cursor.execute(query, (params["userdetails_employee_id"] , params["userdetails_firstname"] , params["userdetails_lastname"] ,params["userdetails_phone"],params["userdetails_email"] , params["userdetails_position"] ,user_id , ) ) 
+			ps_connection.commit()
+			ps_cursor.close()
+			CloseDB(ps_connection)      
+			return 'success'
+	except Exception as e :
+		print(e)
+		return e
+
+def update_userdetails(params,user_public_id):
+	try:
+		column = ''
+		for column_name in params.keys():
+			column = str(column) + str(column_name + " = '" + params[column_name] + "' ,")
+		sql_prepare = (column[0:(len(column))-1])
+		user_id = findUserIdfromPublic_id(user_public_id)
+		sql_builder = "UPDATE userdetails SET "  + str( sql_prepare) + " WHERE user_id = %s "
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			ps_cursor.execute(sql_builder, (user_id , ) ) 
+			ps_connection.commit()
+			ps_cursor.close()
+			CloseDB(ps_connection)      
+			return ['success' ,'Edited : ' +str (user_public_id)  ,200]
+	except Exception as e :
+		return ['success' ,'failed ' +e.message  ,500]

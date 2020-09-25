@@ -79,3 +79,37 @@ def Register_user_company(current_user):
     except Exception as e :
         return jsonify({"status": "Failed" , "message" : "failed company invalid or did not have group all" }), 500
 
+
+
+
+@MemberService.route("/userdetails/<user_public_id>", methods=["POST"])
+@token_required_admin
+def insert_userdetails(current_user , user_public_id):
+    if request.content_type != 'application/json':
+        return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
+    params = request.get_json()  
+    valid_user = findValidUserId(user_public_id)
+    if valid_user != 1 :
+        return jsonify({"status": "Failed" , "message" : "Invalid User" }), 400
+    valid_user_details = findValidUserId_details(user_public_id)
+    if valid_user_details >= 1 :
+        return jsonify({"status": "Failed" , "message" : " Already has UserDetails" }), 400
+    result = insertUser_details(params,user_public_id)
+    if result == 'success':
+        return jsonify({"status": "success", "user_public_id" : user_public_id }), 201
+    else:
+        return jsonify({"status": "Failed" , "message" :'server error' }), 500
+
+@MemberService.route("/userdetails/<user_public_id>", methods=["PATCH"])
+@token_required_admin
+def update_userdetail(current_user , user_public_id):
+    if request.content_type != 'application/json':
+        return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
+    params = request.get_json()  
+    valid_user = findValidUserId(user_public_id)
+    if valid_user != 1 :
+        return jsonify({"status": "Failed" , "message" : "Invalid User" }), 400
+    valid_user_details = findValidUserId_details(user_public_id)
+    result = update_userdetails(params,user_public_id)
+    return jsonify({"status": result[0], "message" : result[1] }), result[2]
+   

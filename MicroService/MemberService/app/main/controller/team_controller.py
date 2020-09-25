@@ -55,6 +55,22 @@ def Register_team_company(current_user):
 		jsonify({"status": "failed", "message": "error" }), 500
 
 
+@TeamService.route("/team/<id>", methods=["PUT"])
+@token_required_admin
+def edit_team_companay_name(current_user,id):
+	company_id = current_user['company_id']
+	admin_id = current_user['admin_id']
+	if request.content_type != 'application/json':
+		return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
+	params = request.get_json()  
+	if "team_name" not in params.keys():
+		return jsonify({"status": "failed", "message": "Invalid team_name" }), 404
+	result = EditTeam(params["team_name"],company_id)
+	if result == 'success':
+		return jsonify ({"status": "success", "message": "team updated" }), 200
+	else :
+		jsonify({"status": "failed", "message": "error" }), 500
+
 @TeamService.route("/team/member", methods=["POST"])
 @token_required_admin
 def Register_team_member_company(current_user):
