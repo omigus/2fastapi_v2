@@ -107,3 +107,20 @@ def Remove_team_member_company(current_user):
 		return jsonify ({"status": "success", "message": "removed" }), 404
 	else :
 		jsonify({"status": "failed", "message": "invalid fk key" }), 500
+  
+
+@TeamService.route("/team", methods=["DELETE"])
+@token_required_admin
+def Remove_team_company(current_user):
+	company_id = current_user['company_id']
+	admin_id = current_user['admin_id']
+	if request.content_type != 'application/json':
+		return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
+	params = request.get_json()  
+	if "team_id" not in params.keys():
+		return jsonify({"status": "failed", "message": "Invalid team_id" }), 404
+	result = RemoveTeam(params["team_id"] )
+	if result == 'success':
+		return jsonify ({"status": "success", "message": "removed" }), 404
+	else :
+		jsonify({"status": "failed", "message": "invalid fk key" }), 500

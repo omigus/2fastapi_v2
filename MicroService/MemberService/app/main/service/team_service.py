@@ -153,6 +153,20 @@ def RemoveTeamMember(team_id , user_id) :
 			return 'success'
 	except Exception as e :
 		 return 'error'
+def RemoveTeam(team_id ) :
+	try:
+		ps_connection  = InitDB()
+		if(ps_connection):
+			ps_cursor = ps_connection.cursor()
+			query = ("  delete from team where team_id = %s  " )
+			ps_cursor.execute(query, (team_id , ) ) 
+			ps_connection.commit()
+			ps_cursor.close()
+			CloseDB(ps_connection)      
+			return 'success'
+	except Exception as e :
+		print(e)
+		return 'error'
 
 	
 	

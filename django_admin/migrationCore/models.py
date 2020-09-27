@@ -13,6 +13,16 @@ class Status(models.Model):
 
     def __str__(self):
         return str(self.status_name)
+
+class Priority(models.Model):
+    priority_id = models.AutoField(primary_key=True)
+    priority_name = models.CharField(max_length=80, blank=True, null=True)
+
+    class Meta:
+        db_table = "priority"
+
+    def __str__(self):
+        return self.priority_name
 ### module ในการทำงานของฟังก์ชัน ###
 class Module(models.Model):
     module_id = models.AutoField(primary_key=True)
@@ -150,7 +160,6 @@ class System_token(models.Model):
         db_table = "system_token"
     def __str__(self):
         return str(self.system_token)
-
 class Team(models.Model):
     team_id = models.AutoField(primary_key=True)
     team_public_id =  models.UUIDField(
@@ -166,7 +175,6 @@ class Team(models.Model):
         db_table = "team"
     def __str__(self):
         return str(self.team_public_id)
-
 class Team_has_users(models.Model):
     team_has_users_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.CASCADE)
@@ -175,7 +183,6 @@ class Team_has_users(models.Model):
         db_table = "team_has_users"
     def __str__(self):
         return str(self.team_has_users_id)
-
 class Userdetails(models.Model):
     userdetails_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, models.CASCADE)
@@ -190,3 +197,107 @@ class Userdetails(models.Model):
         db_table = "userdetails"
     def __str__(self):
         return str(self.userdetails_id)
+class Project(models.Model):
+    project_id = models.AutoField(primary_key=True)
+    project_public_id = models.UUIDField(
+         default=uuid.uuid4, editable=False ,unique = True
+    )
+    project_number = models.CharField(max_length=80, blank=True, null=True)
+    project_name = models.CharField(max_length=80, blank=True, null=True)
+    project_desc = models.TextField()
+    project_startdate = models.DateTimeField()
+    project_enddate = models.DateTimeField()
+    status = models.ForeignKey(Status, models.CASCADE, blank=True, null=True)
+    project_created = models.DateTimeField()
+    project_creator = models.ForeignKey(Admin, models.CASCADE)
+    class Meta:
+        db_table = "project"
+
+    def __str__(self):
+        return str(self.project_public_id)
+class Job(models.Model):
+    job_id = models.AutoField(primary_key=True)
+    job_public_id = models.UUIDField(
+         default=uuid.uuid4, editable=False ,unique = True
+    )
+    job_number = models.CharField(max_length=80, blank=True, null=True)
+    job_name = models.CharField(max_length=80, blank=True, null=True)
+    status = models.ForeignKey(Status, models.CASCADE, blank=True, null=True)
+    priority = models.ForeignKey(Priority, models.CASCADE, blank=True, null=True)
+    job_created = models.DateTimeField()
+    job_startdate = models.DateField(auto_now=False, auto_now_add=False)
+    job_enddate = models.DateField(auto_now=False, auto_now_add=False)
+    job_creator = models.ForeignKey(Admin, models.CASCADE)
+    class Meta:
+        db_table = "job"
+    def __str__(self):
+        return str(self.job_public_id)
+class JobDetails(models.Model):
+    jobdetails_id = models.AutoField(primary_key=True)
+    job = models.OneToOneField(Job, models.CASCADE)
+    jobdetails_location = models.TextField( blank=True, null=True)
+    jobdetails_desc = models.TextField( blank=True, null=True)
+    jobdetails_note = models.TextField(default="")
+    class Meta:
+        db_table = "jobdetails"
+    def __str__(self):
+        return str(self.job_public_id)
+class Project_has_team (models.Model):
+    project_has_team_id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(Project , models.CASCADE)
+    team = models.ForeignKey(Team , models.CASCADE)
+    class Meta:
+        db_table = "project_has_team"
+    def __str__(self):
+        return str(self.project_has_team_id)
+class Project_has_job(models.Model):
+    project_has_job_id  = models.AutoField(primary_key=True)
+    project = models.ForeignKey(Project , models.CASCADE)
+    job = models.ForeignKey(Job , models.CASCADE)
+    
+    class Meta:
+        db_table = "project_has_job"
+    def __str__(self):
+        return str(self.project_has_job_id)
+    
+class Team_has_job(models.Model):
+    team_has_job_id = models.AutoField(primary_key=True)
+    team = models.ForeignKey(Team , models.CASCADE)
+    job = models.ForeignKey(Job , models.CASCADE)
+    status = models.ForeignKey(Status, models.CASCADE, blank=True, null=True)
+    class Meta:
+        db_table = "team_has_job"
+    def __str__(self):
+        return str(self.team_has_job_id)
+class User_has_job(models.Model):
+    user_has_job_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User , models.CASCADE)
+    job = models.ForeignKey(Job , models.CASCADE)
+    status = models.ForeignKey(Status, models.CASCADE, blank=True, null=True)
+    class Meta:
+        db_table = "user_has_job"
+    def __str__(self):
+        return str(self.user_has_job_id)
+class Milestones(models.Model):
+    milestones_id = models.AutoField(primary_key=True)
+    milestones_name = models.TextField( blank=True, null=True)
+    milestones_enddate = models.DateTimeField()
+    milestones_desc =  models.TextField()
+    milestones_created = models.DateTimeField()
+    project = models.ForeignKey(Project,models.CASCADE)
+    company = models.ForeignKey(Company , models.CASCADE)
+    status = models.ForeignKey(Status, models.CASCADE, blank=True, null=True)
+    milestones_creator = models.ForeignKey(Admin , models.CASCADE)
+    class Meta:
+        db_table = "milestones"
+    def __str__(self):
+        return str(self.milestones_id)
+class Milestones_has_job(models.Model):
+    milestones_has_job_id = models.AutoField(primary_key=True)
+    milestones = models.ForeignKey(Milestones , models.CASCADE)
+    job = models.ForeignKey(Job,models.CASCADE)
+    class Meta:
+        db_table = "milestones_has_job"
+    def __str__(self):
+        return str(self.milestones_has_job_id)
+    
