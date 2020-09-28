@@ -2,34 +2,17 @@ import flask
 import requests
 import os
 from app.main.database import InitDB , CloseDB
+import uuid
 
-def findByPublic_company(company_public_id):
+def create_project():
 	try:
 		ps_connection  = InitDB()
 		if(ps_connection):
-			uuid_entry = str(company_public_id) 
 			ps_cursor = ps_connection.cursor()
-			query = ("select * from company where company_public_id = %s ")
-			ps_cursor.execute(query, (uuid_entry , ) )
-			company = ps_cursor.fetchone()
+			query = ("  insert into project( project_public_id , project_number , project_name ,project_desc,project_startdate ,project_enddate , project_created , project_creator_id , status_id ) values ( %s , %s , %s ,%s ,%s ,%s,%s,%s,%s )" )
+			ps_cursor.execute(query, (admin_public_id,  username , hashed_password , '1', company_id , )
 			ps_cursor.close()   
 			CloseDB(ps_connection)     
 			return company
 	except(Exception ) as e:
 		return 'error'
-def findIdByPublic_company(company_public_id):
-	try:
-		ps_connection  = InitDB()
-		if(ps_connection):
-			uuid_entry = str(company_public_id) 
-			ps_cursor = ps_connection.cursor()
-			query = ("select company_id from company where company_public_id = %s ")
-			ps_cursor.execute(query, (uuid_entry , ) )
-			company = ps_cursor.fetchone()
-			ps_cursor.close()   
-			CloseDB(ps_connection)     
-			return company
-	except(Exception ) as e:
-		return 'error'
-
-

@@ -13,8 +13,9 @@ import requests
 ProjectService = Blueprint("ProjectService", __name__,url_prefix= "/api/v2")
 @ProjectService.route("/project", methods=["POST"])
 @token_required_admin
-def create_project(current_user):
-    data = ['success' , 'yes' , 200]
-    return http_response(data)
+def start_project(current_user):
+    if request.content_type != 'application/json':
+        data = ['failed' , 'Invalid content-type. Must be application/json.' , 400]
+        return http_response(data)
     
 

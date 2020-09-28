@@ -16,7 +16,7 @@ def findAll_Company_admin(company_id):
 		ps_connection  = InitDB()
 		if(ps_connection):
 			ps_cursor = ps_connection.cursor(cursor_factory=RealDictCursor)
-			query = (" select team.team_id , team.team_public_id , team.team_name , team.team_avatar , team.team_is_active , team.created_on , team.admin_id , team.company_id "
+			query = (" select team.team_id , team.team_public_id , team.team_name , team.team_avatar , team.team_is_active ,(SELECT extract(epoch from team.created_on) as TIME ), team.admin_id , team.company_id "
 			  			" from team inner join company on team.company_id = company.company_id "
 							 " where company.company_id = %s "
 			 )
@@ -61,6 +61,7 @@ def findTeam_ById(id):
 			 				)
 			ps_cursor.execute(query, (id , ) ) 
 			team = ps_cursor.fetchone()
+			team["created_on"] = team["created_on"].timestamp()
 			if team is None:
 				team = []
 			ps_cursor.close()
