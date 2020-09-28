@@ -63,7 +63,6 @@ def token_required_admin(f):
 				ps_cursor.close()
 				CloseDB(ps_connection) 
 				activeToken = rv[0]
-				print(activeToken)
 			
 				if activeToken != access_token :
 					return jsonify({"message": "Token BlackList"}), 401

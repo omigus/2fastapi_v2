@@ -33,8 +33,8 @@ def dashboard_company_by_id(current_user , id):
 	company_id = current_user['company_id']
 	if request.content_type != 'application/json':
 		return jsonify({"status": "failed", "message": "Invalid content-type. Must be application/json." }), 400
-	team_member = findteamMember_details(id)
-	team = findTeam_ById(id)
+	team_member = findteamMember_details(str(id))
+	team = findTeam_ById(str(id))
 	return jsonify ({ "team_member"  :team_member[1] , "team": team[1]  }), 200
 
 @TeamService.route("/team", methods=["POST"])

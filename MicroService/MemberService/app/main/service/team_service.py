@@ -5,11 +5,10 @@ import os
 from app.main.database import InitDB , CloseDB
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from datetime import datetime
+import datetime, pytz
 import uuid
 from psycopg2.extras import RealDictCursor
-
-dt = datetime.now()
+tz = pytz.timezone('Asia/Bangkok')
 
 
 def findAll_Company_admin(company_id):
@@ -60,7 +59,7 @@ def findTeam_ById(id):
 								" select * from team "
 								" where team.team_id = %s "
 			 				)
-			ps_cursor.execute(query, (id ) ) 
+			ps_cursor.execute(query, (id , ) ) 
 			team = ps_cursor.fetchone()
 			if team is None:
 				team = []
@@ -73,6 +72,7 @@ def findTeam_ById(id):
 
 
 def InsertTeam(team_name , team_avatar , admin_id , company_id):
+	dt = datetime.datetime.now(tz)
 	team_uuid = str(uuid.uuid4()) 
 	try:
 		ps_connection  = InitDB()
