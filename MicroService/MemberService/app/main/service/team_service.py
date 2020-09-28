@@ -86,7 +86,8 @@ def InsertTeam(team_name , team_avatar , admin_id , company_id):
 			CloseDB(ps_connection)      
 			return 'success'
 	except Exception as e :
-		 return 'error'
+		print(e)
+		return 'error'
 
 
 def EditTeam(team_name , company_id):
