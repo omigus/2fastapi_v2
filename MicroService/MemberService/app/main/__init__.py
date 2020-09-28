@@ -16,7 +16,7 @@ def create_app(config_name):
     key_func=get_remote_address,
     default_limits=[ "100 per minute"]
     )
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    cors = CORS(app)
     app.config.from_object(config_by_name[config_name])
     # db.init_app(app)
     # ma.init_app(app)
