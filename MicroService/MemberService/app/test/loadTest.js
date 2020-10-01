@@ -5,7 +5,7 @@ export let options = {
   iterations: 1000,
 };
 export default function () {
-  var url = 'http://www.2fast.online:5000/api/v2/team/1/dashboard';
+  var url = 'http://127.0.0.1:8000/';
   var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJfcHVibGljX2lkIjoiYzg0ZTNjODUtMTM2Yi00YzExLWIwN2YtMzQyMTQwMzBjYmQwIiwiYWRtaW5faWQiOiIxIiwiY29tcGFueV9pZCI6IjMiLCJleHAiOjE2MDIwNTQ0MTN9.MZz0d87CyV107x_F0JGq8oUDc2o1wb_MJNu1DoqOAj0'
 
   var params = {
