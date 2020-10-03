@@ -4,20 +4,24 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 from app.utils.jwt import authorized
 from app.api.projects.service import find
 from app.models import Projects
+from app.utils.json import  UUIDEncoder
+import json
+
+
 
 
 
 project_service = Blueprint(name="project_service")
-
-
 @project_service.route("/projects" , methods=['GET'])
 @authorized()
 async def find_all_project(req , current_user):
-  projects = await find()
-  Projects_Pydantic = pydantic_model_creator(Projects)
-  tourpy = await Projects_Pydantic.from_tortoise_orm(projects)
-  return response.json({"projects": tourpy.json()})
-  # return response.json({"projects": [str(project) for project in projects]})
+  Projects_Pydantic =  pydantic_model_creator(Projects)
+  result = await Projects_Pydantic.from_queryset(
+        Projects.all().prefetch_related(
+            "status", 
+        ))
+  return response.json({"projects": json_data})
+
 
 
 @project_service.route("/projects" , methods=['POST'])
@@ -31,9 +35,10 @@ async def insert_project(req , current_user):
 async def list_all(req , current_user):
   async with in_transaction() as conn:
     list_of_dicts = await conn.execute_query_dict(
-        "select user_id from users "
+        "select * from project "
     )
-  return response.json(current_user)
+    json_data = json.dumps(list_of_dicts , cls=UUIDEncoder)
+  return response.json(json.loads(json_data))
 
 @project_service.route("/2/<id>" , methods=['GET'])
 async def test_request_args(req , id):

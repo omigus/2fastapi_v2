@@ -1,6 +1,6 @@
 from tortoise import fields, models
 from .status import Status 
-
+from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise import Tortoise
 from pydantic import BaseModel
 import uuid
@@ -21,8 +21,4 @@ class Projects(models.Model):
     class Meta:
         table="project"
         ordering = ["project_id"]
-    # def __str__(self):
-    #     return  str(self.project_id)+ ',' + str(self.project_public_id) +  ',' + str(self.status) 
-    
-
 

@@ -9,7 +9,4 @@ async def find():
     Project = await Projects.all().prefetch_related(
             "status", 
         )
-    # Project = await Projects_Pydantic.from_queryset(await Projects.all().prefetch_related(
-    #         "status", 
-    #     ))
     return Project

@@ -7,11 +7,6 @@ from app.core import create_app
 from dotenv import load_dotenv
 
 
-
-
-
-
-
 load_dotenv()
 
 # logging.basicConfig(level=logging.DEBUG)
