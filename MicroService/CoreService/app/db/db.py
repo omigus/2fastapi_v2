@@ -1,23 +1,26 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 config = {
     'connections': {
-        # Dict format for connection
         'default': {
             'engine': 'tortoise.backends.asyncpg',
             'credentials': {
-                'host': os.getenv('HOST'),
-                'port': os.getenv('PORT'),
+                'host': os.getenv('DB_HOST'),
+                'port':os.getenv('DB_PORT'),
                 'user': os.getenv('DB_USER'),
                 'password': os.getenv('DB_PASSWORD'),
-                'database': os.getenv('DATABASE'),
+                'database': os.getenv('DB_DATABASE'),
                 'maxsize':'100'
             }
         },
     },
     'apps': {
         'models': {
-            'models': ['__main__'],
-            # If no default_connection specified, defaults to 'default'
+            'models': ["app.models"],
+            # 'models': ["app.api.projects.model" ,"app.api.status.model" ],
             'default_connection': 'default',
         }
     }

@@ -7,11 +7,10 @@ from tortoise.contrib.sanic import register_tortoise
 from sanic_limiter import Limiter, get_remote_address
 
 
-
 def create_app():
     app = Sanic(__name__)
+    # = Limiter(app, global_limits=['70 per minute'], key_func=get_remote_address)
+    register_tortoise(app, generate_schemas=False ,config = DBconfig )
     bcrypt = Bcrypt(app)
     # CORS(app, automatic_options=True)
-    register_tortoise(app, generate_schemas=False ,config = DBconfig)
-    limiter = Limiter(app, global_limits=['70 per minute'], key_func=get_remote_address)
     return app
