@@ -5,10 +5,10 @@ from prometheus_sanic import monitor
 import logging
 from app.core import create_app
 from dotenv import load_dotenv
-from tortoise import Tortoise
 
 
-Tortoise.init_models(["__main__"] ,"models" )
+
+
 
 
 
