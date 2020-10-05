@@ -2,11 +2,11 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 export let options = {
   vus: 100,
-  iterations: 1000,
+  iterations: 100,
 };
 export default function () {
-  var url = 'http://127.0.0.1:8000/';
-  var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJfcHVibGljX2lkIjoiYzg0ZTNjODUtMTM2Yi00YzExLWIwN2YtMzQyMTQwMzBjYmQwIiwiYWRtaW5faWQiOiIxIiwiY29tcGFueV9pZCI6IjMiLCJleHAiOjE2MDIwNTQ0MTN9.MZz0d87CyV107x_F0JGq8oUDc2o1wb_MJNu1DoqOAj0'
+  var url = 'http://127.0.0.1:8000/api/v2/projects';
+  var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJfcHVibGljX2lkIjoiYmQzNzQ4MGEtZWNmMy00OGMyLThiNGMtMDAyMjMwZWQ4MWQyIiwiYWRtaW5faWQiOiIyIiwiY29tcGFueV9pZCI6IjMiLCJleHAiOjE2MDI0ODMyMjJ9.WGLRdcSm6x81Jh2v53HzdwcgXKdORSlgldv0GQGf1Vs'
 
   var params = {
     headers: {

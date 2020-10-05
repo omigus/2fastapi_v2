@@ -9,7 +9,7 @@ from sanic_limiter import Limiter, get_remote_address
 
 def create_app():
     app = Sanic(__name__)
-    Limiter(app, global_limits=['60 per minute'], key_func=get_remote_address)
+    # Limiter(app, global_limits=['60 per minute'], key_func=get_remote_address)
     register_tortoise(app, generate_schemas=False ,config = DBconfig )
     bcrypt = Bcrypt(app)
     # CORS(app, automatic_options=True)
