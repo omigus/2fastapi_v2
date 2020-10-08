@@ -25,8 +25,16 @@ async def insert(req , admin_id):
     
 
 
-async def find():
-    Project = await Projects.all().prefetch_related(
-            "status", 
-        )
-    return Project
+async def find(admin_id):
+  try:
+    async with in_transaction() as conn:
+      query = (    " SELECT * from project  ")
+      find_all = await conn.execute_query_dict(
+        " SELECT * from project  "
+      )
+      return find_all
+  except Exception as e:
+    print(e)
+    return e 
+  
+    

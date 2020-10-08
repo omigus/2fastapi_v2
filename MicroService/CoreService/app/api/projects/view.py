@@ -8,9 +8,6 @@ from tortoise.exceptions import TransactionManagementError
 from app.utils.validate_response import  response_json ,check_content_type , check_json_key 
 import json
 
-
-
-
 project_service = Blueprint(name="project_service")
 @project_service.route("/projects" , methods=['POST'])
 @authorized()
@@ -33,13 +30,19 @@ async def insert_project(req , current_user):
       "status_code" : 500
     })
 
-# @project_service.route("/projects" , methods=['GET'])
-# @authorized()
-# async def fimd
-
-  #   json_data = json.dumps(list_of_dicts , cls=UUIDEncoder)
+@project_service.route("/projects" , methods=['GET'])
+@authorized()
+async def find_all_project(req, current_user):
+  admin_id = int(current_user["admin_id"])
+  rv = await find(admin_id)
+  json_data = json.dumps(rv , cls=UUIDEncoder)
   # return response.json(json.loads(json_data))
-
+  return await response_json({
+      "status" : "Success" ,
+      "message" : json.loads(json_data),
+      "status_code" : 200
+    })
+  
 
 
   
