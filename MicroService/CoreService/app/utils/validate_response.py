@@ -1,5 +1,9 @@
 from sanic import response
 
+#status
+#message
+#status_code
+#dict
 async def response_json(payload):
   return response.json({
             "status" : payload["status"] , 

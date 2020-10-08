@@ -29,7 +29,6 @@ def login_admin():
 			rv = ps_cursor.fetchone()
 			ps_cursor.close()
 			CloseDB(ps_connection) 
-			
 			if not rv :
 				return jsonify({"status": "failed", 'message': "Username is incorrect "}), 401  
 			password = rv[5]
@@ -47,8 +46,8 @@ def login_admin():
 			else :
 				return jsonify({"status": "failed", 'message': "Password is incorrect "}), 401
 	except Exception as e :
-		return e
-
+		print(e)
+	
 
 
 @AuthService.route("/login/user", methods=["POST"])

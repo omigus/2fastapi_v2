@@ -16,4 +16,4 @@ app.blueprint(api)
 
 if __name__ == "__main__":
     monitor(app , endpoint_type="url").expose_endpoint()
-    app.run(port=8000,host="0.0.0.0" ,debug=True, workers=1 )
+    app.run(port=8000 ,debug=True, workers=1 )
